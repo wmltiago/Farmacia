@@ -4,18 +4,45 @@ import { Box } from "@mui/system";
 import { deepOrange } from '@mui/material/colors';
 import { ExpandLess, ExpandMore, Home } from "@mui/icons-material";
 import { useDrawerContex } from "../../contexts";
-
+import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 
 
 interface IMenuLateralProps {
     children: React.ReactNode
 }
 
+interface IListItemProps {
+    label: string; //nome do item
+    icon: string; //icone
+    to: string; //rota para onde navegar
+    onClick: (() => void) | undefined;
+}
+
+const ListItemLink: React.FC<IListItemProps> = ({ to, icon, label, onClick }) => {
+    const navigate = useNavigate();
+
+    const resolverPath = useResolvedPath(to); //hook do React router dom para resolver qual patch estamos atualmente.
+    const match = useMatch({ path: resolverPath.pathname, end: false, });//hook do React router dom para identificar se a rota está selecionada ou não.
+    const handleClick2 = () => {
+        navigate(to);
+        onClick?.(); //verifica se uma função é undefined
+    };
+
+    return (
+        <ListItemButton selected={!!match} onClick={handleClick2}>
+            <ListItemIcon>
+                <Icon>{icon}</Icon>
+            </ListItemIcon>
+            <ListItemText primary={label} />
+        </ListItemButton>
+    );
+}
+
 export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
     const theme = useTheme();
     const smDown = useMediaQuery(theme.breakpoints.down('sm')); //controlando e recebendo o breakpoint de tamanho de tela. (menor que 600px)
 
-    const { isDrawerOpen, toggleDrawerOpen } = useDrawerContex();
+    const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContex();
 
     const [open, setOpen] = React.useState(true); //utilizado para o menu drop
     const handleClick = () => {
@@ -36,13 +63,15 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
 
                     <Box flex={1}>
                         <List component="nav">
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <Icon>home</Icon>
-                                </ListItemIcon>
-                                <ListItemText primary="Página Inicial" />
-                            </ListItemButton>
-
+                            {drawerOptions.map(drawerOption => (
+                                <ListItemLink
+                                key={drawerOption.path}
+                                icon={drawerOption.icon}
+                                to={drawerOption.path}
+                                label={drawerOption.label}
+                                onClick={smDown ? toggleDrawerOpen : undefined}
+                                />
+                            ))}
                             <ListItemButton onClick={handleClick}>
                                 <ListItemIcon>
                                     <Icon>inbox</Icon>
@@ -54,17 +83,14 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
                                 <List component="div" disablePadding>
                                     <ListItemButton sx={{ pl: 4 }}>
                                         <ListItemIcon>
-                                            <Icon>starred</Icon>
+                                            <Icon>highlight</Icon>
                                         </ListItemIcon>
                                         <ListItemText primary="Starred" />
                                     </ListItemButton>
                                 </List>
                             </Collapse>
-
                         </List>
                     </Box>
-
-
                 </Box>
             </Drawer>
 
