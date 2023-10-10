@@ -3,7 +3,7 @@ import React from "react";
 import { Box } from "@mui/system";
 import { deepOrange } from '@mui/material/colors';
 import { ExpandLess, ExpandMore, Home } from "@mui/icons-material";
-import { useDrawerContex } from "../../contexts";
+import { useAppThemeContex, useDrawerContex } from "../../contexts";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 
 
@@ -43,8 +43,9 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
     const smDown = useMediaQuery(theme.breakpoints.down('sm')); //controlando e recebendo o breakpoint de tamanho de tela. (menor que 600px)
 
     const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContex();
+    const { toggleTheme } = useAppThemeContex();
 
-    const [open, setOpen] = React.useState(true); //utilizado para o menu drop
+    const [open, setOpen] = React.useState(false); //utilizado para o menu drop iniciar aberto ou fechado
     const handleClick = () => {
         setOpen(!open);
     };
@@ -65,11 +66,11 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
                         <List component="nav">
                             {drawerOptions.map(drawerOption => (
                                 <ListItemLink
-                                key={drawerOption.path}
-                                icon={drawerOption.icon}
-                                to={drawerOption.path}
-                                label={drawerOption.label}
-                                onClick={smDown ? toggleDrawerOpen : undefined}
+                                    key={drawerOption.path}
+                                    icon={drawerOption.icon}
+                                    to={drawerOption.path}
+                                    label={drawerOption.label}
+                                    onClick={smDown ? toggleDrawerOpen : undefined}
                                 />
                             ))}
                             <ListItemButton onClick={handleClick}>
@@ -89,6 +90,16 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
                                     </ListItemButton>
                                 </List>
                             </Collapse>
+                        </List>
+                    </Box>
+                    <Box>
+                        <List component="nav">
+                            <ListItemButton onClick={toggleTheme}>
+                                <ListItemIcon>
+                                    <Icon>dark_mode</Icon>
+                                </ListItemIcon>
+                                <ListItemText primary="Alterar Tema" />
+                            </ListItemButton>
                         </List>
                     </Box>
                 </Box>
