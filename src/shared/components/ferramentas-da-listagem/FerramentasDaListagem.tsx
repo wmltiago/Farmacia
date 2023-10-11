@@ -1,4 +1,5 @@
 import { Box, Button, Icon, Paper, TextField, useTheme } from "@mui/material";
+import { Environment } from "../../environment";
 
 
 interface IFerramentasDaListagemProps {
@@ -38,7 +39,7 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
                     size="small" //tamanho do input
                     value={textoDaBusca}
                     onChange={(e) => aoMudarTextoDeBusca?.(e.target.value)} //configuração do input de pesquisa
-                    placeholder="Pesquisar..."
+                    placeholder={Environment.INPUT_DE_BUSCA}
                 />
             )}
 

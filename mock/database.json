@@ -1,0 +1,28 @@
+{
+    "pessoas": [
+        {
+            "id":1,
+            "nomeCompleto": "Tiago Borges",
+            "email": "tiago.teste@outlook.com",
+            "cidadeId":1
+        },
+        {
+            "id":2,
+            "nomeCompleto": "Caio Rocha",
+            "email": "caio.teste@outlook.com",
+            "cidadeId":1
+        },
+        {
+            "id":3,
+            "nomeCompleto": "Cleid",
+            "email": "Cleid.teste@outlook.com",
+            "cidadeId":1
+        },
+        {
+            "id":4,
+            "nomeCompleto": "Wellington",
+            "email": "Wellington.teste@outlook.com",
+            "cidadeId":1
+        }
+    ]
+}
