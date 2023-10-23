@@ -1,7 +1,7 @@
 import { Drawer, useTheme, Avatar, Divider, List, ListItemButton, ListItemIcon, ListItemText, Icon, Collapse, useMediaQuery } from "@mui/material";
 import React from "react";
 import { Box } from "@mui/system";
-import { deepOrange } from '@mui/material/colors';
+import { cyan, deepOrange } from '@mui/material/colors';
 import { ExpandLess, ExpandMore, Home } from "@mui/icons-material";
 import { useAppThemeContex, useDrawerContex } from "../../contexts";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
@@ -57,7 +57,7 @@ export const MenuLateral: React.FC<IMenuLateralProps> = ({ children }) => {
 
                     <Box width='100%' height={theme.spacing(20)} display='flex' alignItems='center' justifyContent='center'>
                         <Avatar
-                            sx={{ bgcolor: deepOrange[500], height: theme.spacing(8), width: theme.spacing(8) }}>Tiago</Avatar>
+                            sx={{ bgcolor: cyan[500], height: theme.spacing(8), width: theme.spacing(8) }}>Tiago</Avatar>
                     </Box>
 
                     <Divider />

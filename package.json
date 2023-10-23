@@ -8,6 +8,8 @@
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.14.12",
     "@mui/material": "^5.14.12",
+    "@unform/core": "^2.1.6",
+    "@unform/web": "^2.1.6",
     "axios": "^1.5.1",
     "database.json": "^0.0.4",
     "json-server": "^0.17.4",

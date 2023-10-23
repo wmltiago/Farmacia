@@ -39,7 +39,7 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
                     size="small" //tamanho do input
                     value={textoDaBusca}
                     onChange={(e) => aoMudarTextoDeBusca?.(e.target.value)} //configuração do input de pesquisa
-                    placeholder={Environment.INPUT_DE_BUSCA}
+                    label={Environment.INPUT_DE_BUSCA}
                 />
             )}
 
