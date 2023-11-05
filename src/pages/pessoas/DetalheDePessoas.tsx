@@ -2,11 +2,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { Save } from "@mui/icons-material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
 import { Box, Container, Grid, LinearProgress, Paper, TextField, Typography } from "@mui/material";
-import { VTextField, VForm } from "../../shared/forms";
-import { FormHandles } from "@unform/core";
+import { VTextField, VForm, useVForm } from "../../shared/forms";
+
 
 
 interface IFormData { //tipagem exclusiva para o unform
@@ -18,8 +18,7 @@ interface IFormData { //tipagem exclusiva para o unform
 export const DetalheDePessoas: React.FC = () => {
     const { id = 'nova' } = useParams<'id'>();
     const navegate = useNavigate();
-
-    const formRef = useRef<FormHandles>(null); //pega referencias de outros elementos
+    const { formRef, save, saveAndClose, IsSaveAndClose } = useVForm(); //pega referencias de outros elementos
 
     const [isLoading, setIsLoading] = useState(false);
     const [nome, setNome] = useState("");
@@ -41,7 +40,7 @@ export const DetalheDePessoas: React.FC = () => {
                         formRef.current?.setData(result); // para preencher os dados cadastrados para as inputs.
                     }
                 });
-        }else{
+        } else {
             formRef.current?.setData({
                 nomeCompleto: "",
                 email: "",
@@ -57,22 +56,34 @@ export const DetalheDePessoas: React.FC = () => {
             PessoasService.create(dados)
                 .then((result) => {
                     setIsLoading(false);
-                    
+
                     if (result instanceof Error) {
                         alert(result.message);
                     } else {
-                        // navegate(`/pessoas/detalhe/${result}`)
-                        navegate(`/pessoas/detalhe/nova`)
+                        if (IsSaveAndClose()) {
+                            navegate('/pessoas');
+
+                        } else {
+                            // navegate(`/pessoas/detalhe/${result}`)
+                            navegate('/pessoas/detalhe/nova');
+                        }
+
                     }
                 });
 
         } else {
-            PessoasService.upDateById(Number(id), { id: Number(id), ...dados })
+            PessoasService
+                .upDateById(Number(id), { id: Number(id), ...dados })
                 .then((result) => {
                     setIsLoading(false);
                     alert("Resgistro salvo com sucesso!");
                     if (result instanceof Error) {
                         alert(result.message);
+                    }else{
+                        if (IsSaveAndClose()) {
+                            navegate('/pessoas');
+
+                        }
                     }
                 });
 
@@ -106,8 +117,8 @@ export const DetalheDePessoas: React.FC = () => {
                     mostrarBotaoApagar={id !== "nova"} //só mostra o botão de apagar se for clicado em editar
                     mostrarBotaoNovo={id !== "nova"}
 
-                    aoClicarEmSalvar={() => formRef.current?.submitForm()}
-                    aoClicarEmSalvarEfechar={() => formRef.current?.submitForm()}
+                    aoClicarEmSalvar={save}
+                    aoClicarEmSalvarEfechar={saveAndClose}
                     aoClicarEmApagar={() => handleDelete(Number(id))}
                     aoClicarEmNovo={() => navegate("/pessoas/detalhe/nova")}
                     aoClicarEmVoltar={() => navegate("/pessoas")}
@@ -142,8 +153,8 @@ export const DetalheDePessoas: React.FC = () => {
                                     fullWidth
                                     label="Nome Completo"
                                     name="nomeCompleto"
-                                    disabled={isLoading}  
-                                    onChange={e => setNome(e.target.value)}                                  
+                                    disabled={isLoading}
+                                    onChange={e => setNome(e.target.value)}
                                 />
 
                             </Grid>
@@ -179,7 +190,7 @@ export const DetalheDePessoas: React.FC = () => {
 
                     </Grid>
 
-                    
+
                 </Box>
 
             </VForm >
